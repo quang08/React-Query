@@ -8,12 +8,20 @@ const POSTS = [
 function App() {
   const queryClient = useQueryClient(); //basically get the query client from main.jsx so that we can invalidate the cache
 
+  //queryKey is an array of strings and objects that will be used to identify the query: 
+  // /posts -> ['posts']
+  // /posts/1 -> ['posts', post.id]
+  // /posts?authorId=1 -> ['posts', { authorId: 1 }]
+  // /posts/2/comments -> ['posts', post.id, 'comments']
   const postsQuery = useQuery({
     queryKey: ["posts"], //unique identifier for this query, a name for this query
-    queryFn: async () => {
+    queryFn: async () => { 
       //function that will be called to fetch the data
       await wait(1000);
       return POSTS;
+      /*
+        return axios.get("/posts").then((res) => res.data); //fetch the data from the server
+      */
       //await Promise.reject("Error Message"); //simulate an error
     },
   });
